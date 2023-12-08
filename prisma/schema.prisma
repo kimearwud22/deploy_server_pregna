@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  username String @unique(map: "username_UNIQUE")
+  tanggal_lahir String
+  role     Role    @relation(fields: [roleId], references: [id])
+  roleId   Int
+  profile  Profile[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Role {
+  id   Int    @id @default(autoincrement())
+  name String
+  users User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Profile {
+  id    Int     @id @default(autoincrement())
+  bio   String?
+  berat_badan Int?
+  umur_janin Int?
+  jam_tidur Int?
+  users User    @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model Upload {
+  id    Int     @id @default(autoincrement())
+  url   String?
+  prediction String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Faq {
+  id    Int     @id @default(autoincrement())
+  question   String?
+  answer String @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  @@index([question], name: "question_UNIQUE")
+}
