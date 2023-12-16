@@ -58,3 +58,16 @@ model Faq {
   updatedAt DateTime @default(now())
   @@index([question], name: "question_UNIQUE")
 }
+
+model Prediction {
+  id   Int     @id @default(autoincrement())
+  accuraty String?
+  food_name String?
+  calcium String?
+  carbohydrate String?
+  fat String?
+  protein String?
+  vitamin String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}

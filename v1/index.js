@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 8000
+const port = 8080
 const authRouter = require('./router/authRouter');
 const roleRouter = require('./router/routerRole');
 const userRouter = require('./router/userRouter');
@@ -9,6 +9,7 @@ const predictRouter = require('./router/predictRouter');
 const questionRouter = require('./router/questionRouter');
 const cors = require('cors');
 const path = require('path');
+const prediksiRouter = require('./router/prediksiRouter');
 
 app.use(cors());
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use('/api/v1/user', userRouter);
 app.use('/api/v1/profile', profileRouter);
 app.use('/api/v1/predict', predictRouter);
 app.use('/api/v1/question', questionRouter);
+app.use('/api/v1/prediksi', prediksiRouter);
 
 // read html web
 app.use(express.static('public'))
@@ -34,6 +36,6 @@ app.get('/admin', function(req, res) {
 
 
 app.listen(port, () => {
-    console.log('Backend app listening on port 8000!')
+    console.log('Backend app listening on port 8080!')
     }
 )
