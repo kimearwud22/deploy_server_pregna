@@ -35,9 +35,9 @@ model Role {
 model Profile {
   id    Int     @id @default(autoincrement())
   bio   String?
-  berat_badan Int?
-  umur_janin Int?
-  jam_tidur Int?
+  berat_badan String?
+  umur_janin String?
+  jam_tidur String?
   users User    @relation(fields: [userId], references: [id])
   userId Int
 }

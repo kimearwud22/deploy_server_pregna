@@ -40,14 +40,22 @@ const login = async (req, res) => {
                 message: 'You are not authorized'
             });
         }
-        const token = jwt.sign({
+        const tokenPayload = {
             id: user.id,
             email: user.email,
             role: user.role
-        }, process.env.JWT_SECRET);
+        };
+
+        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET);
+        const login = {
+            id: user.id,
+            name: user.name, 
+            token
+        }
+
         return res.status(200).json({
             success: true,
-            token
+            login
         });
     }
     catch(error){
@@ -94,14 +102,22 @@ const loginAdmin = async (req, res) => {
                 message: 'You are not authorized'
             });
         }
-        const token = jwt.sign({
+        const tokenPayload = {
             id: user.id,
             email: user.email,
             role: user.role
-        }, process.env.JWT_SECRET);
+        };
+
+        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET);
+        const login = {
+            id: user.id,
+            name: user.name, 
+            token
+        }
+
         return res.status(200).json({
             success: true,
-            token
+            login
         });
     }
     catch(error){
