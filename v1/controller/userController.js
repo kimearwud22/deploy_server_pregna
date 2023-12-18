@@ -49,6 +49,34 @@ const getUserById = async (req, res) => {
         });
     }
 }
+const getUserByUserId = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await prisma.user.findUnique({
+            where: {
+                id: parseInt(id)
+            },
+            include: {
+                profile: true
+            }
+        });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            user
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
 
 const updateUser = async (req, res) => {
     try {
@@ -96,9 +124,45 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const updateUserProfile = async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { bio, berat_badan, umur_janin, jam_tidur } = req.body;
+  
+      // Perbarui profil pengguna
+      const updatedProfile = await prisma.profile.updateMany({
+        where: {
+          userId: parseInt(userId),
+        },
+        data: {
+          bio,
+          berat_badan,
+          umur_janin,
+          jam_tidur,
+        },
+      });
+  
+      res.json({
+        success: true,
+        message: 'Profile updated successfully',
+        data: updatedProfile,
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Internal Server Error',
+      });
+    }
+  };
+  
+  
+
 module.exports = {
     getAllUsers,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    updateUserProfile,
+    getUserByUserId
 }
