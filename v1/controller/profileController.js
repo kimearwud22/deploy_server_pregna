@@ -43,38 +43,6 @@ const getProfileById = async (req, res) => {
     }
 }
 
-const getProfileUserId = async (req, res) => {
-    try {
-      const { userId } = req.params;
-      const profile = await prisma.profile.findUnique({
-        where: {
-          userId: parseInt(userId),
-        },
-        include: {
-          users: true, // Use 'user' instead of 'users'
-        },
-      });
-  
-      if (!profile) {
-        return res.status(404).json({
-          success: false,
-          message: 'Profile not found',
-        });
-      }
-  
-      return res.status(200).json({
-        success: true,
-        profile,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-    }
-  };
-       
-
 const createProfile = async (req, res) => {
     try {
         const { bio, berat_badan, umur_janin, jam_tidur, userId } = req.body;
@@ -150,40 +118,10 @@ const deleteProfile = async (req, res) => {
     }
 }
 
-const updateProfileByUserId = async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const { bio, berat_badan, umur_janin, jam_tidur } = req.body;
-        const profile = await prisma.profile.update({
-            where: {
-                userId: parseInt(userId)
-            },
-            data: {
-                bio,
-                berat_badan,
-                umur_janin,
-                jam_tidur
-            }
-        });
-        return res.status(200).json({
-            success: true,
-            profile
-        });
-    }
-    catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
-
 module.exports = {
     getAllProfile,
     getProfileById,
     createProfile,
     updateProfile,
-    getProfileUserId,
-    updateProfileByUserId,
     deleteProfile
 }

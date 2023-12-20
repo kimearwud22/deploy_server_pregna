@@ -78,6 +78,41 @@ const getUserByUserId = async (req, res) => {
     }
 }
 
+const getPredikById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await prisma.user.findUnique({
+            where: {
+                id: parseInt(id)
+            },
+            include: {
+                prediction: {
+                    include:{
+                        breakfast: true,
+                        lunch: true,
+                        dinner: true,
+                    }
+                }
+            }
+        });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            user
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -164,5 +199,6 @@ module.exports = {
     updateUser,
     deleteUser,
     updateUserProfile,
-    getUserByUserId
+    getUserByUserId,
+    getPredikById
 }
